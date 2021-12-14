@@ -1,0 +1,9 @@
+1 motor 100 value
+2 motor 100 value
+=> 7,6 sm
+
+maximum length
+1 motor 220 value - limit because of torque issue
+2 motor 300 value
+=> 15,5 sm
+
