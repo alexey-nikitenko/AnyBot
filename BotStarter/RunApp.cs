@@ -13,42 +13,111 @@
 
         public void Run()
         {
-            int firstMotorGoalPosition = 220;
-            int secondMotorGoalPosition = 300;
+            int firstMotorGoalPosition = 100;
+            int secondMotorGoalPosition = 100;
 
-            MoveTwoMotorsInParallel(firstMotorGoalPosition, secondMotorGoalPosition);
-            //_manipulator.SmoothOneStepMoveRight(GetInitialPosition(4), 400);
+            ChangeTwoMotorsAngle(firstMotorGoalPosition, secondMotorGoalPosition);
         }
 
-        private void MoveTwoMotorsInParallel(int firstMotorGoalPosition, int secondMotorGoalPosition)
+        private void ChangeTwoMotorsAngle(int firstMotorGoalPosition, int secondMotorGoalPosition)
+
         {
             int firstMotorInitialPosition = GetInitialPosition(1);
             int secondMotorInitialPosition = GetInitialPosition(2);
 
+            bool isFirstMoveForward = true;
+            bool isSecondMoveForward = true;
+
             int amountOfFirstMotorSteps = firstMotorGoalPosition - firstMotorInitialPosition;
             int amountOfSecondMotorSteps = secondMotorGoalPosition - secondMotorInitialPosition;
 
-            int averageFirstMotorStep = 1;
-            int averageSecondMotorStep = (amountOfFirstMotorSteps + amountOfSecondMotorSteps) / amountOfFirstMotorSteps;
+            if (amountOfFirstMotorSteps < 0) isFirstMoveForward = false;
+            if (amountOfSecondMotorSteps < 0) isSecondMoveForward = false;
 
-            while (firstMotorInitialPosition < 220 && secondMotorInitialPosition < 300)
+            if (isFirstMoveForward && isSecondMoveForward)
             {
-                firstMotorInitialPosition = firstMotorInitialPosition + averageFirstMotorStep;
-                _manipulator.MoveForwardByMotor(1, firstMotorInitialPosition);
+                while (firstMotorInitialPosition < firstMotorGoalPosition || secondMotorInitialPosition < secondMotorGoalPosition)
+                {
+                    if(firstMotorInitialPosition != firstMotorGoalPosition) 
+                        firstMotorInitialPosition = MoveFirstForward(firstMotorInitialPosition);
+                    if (secondMotorInitialPosition != secondMotorGoalPosition) 
+                        secondMotorInitialPosition = MoveSecondForward(secondMotorInitialPosition);
+                }
+            }
 
-                secondMotorInitialPosition = secondMotorInitialPosition + averageSecondMotorStep;
-                _manipulator.MoveForwardByMotor(2, secondMotorInitialPosition);
+            if (!isFirstMoveForward && isSecondMoveForward)
+            {
+                while (firstMotorInitialPosition > firstMotorGoalPosition || secondMotorInitialPosition < secondMotorGoalPosition)
+                {
+                    if (firstMotorInitialPosition != firstMotorGoalPosition)
+                        firstMotorInitialPosition = MoveFirstBack(firstMotorInitialPosition);
+                    if (secondMotorInitialPosition != secondMotorGoalPosition)
+                        secondMotorInitialPosition = MoveSecondForward(secondMotorInitialPosition);
+                }
+            }
 
-                //Thread.Sleep(50);
+            if (isFirstMoveForward && !isSecondMoveForward)
+            {
+                while (firstMotorInitialPosition < firstMotorGoalPosition || secondMotorInitialPosition > secondMotorGoalPosition)
+                {
+                    if (firstMotorInitialPosition != firstMotorGoalPosition)
+                        firstMotorInitialPosition = MoveFirstForward(firstMotorInitialPosition);
+                    if (secondMotorInitialPosition != secondMotorGoalPosition)
+                        secondMotorInitialPosition = MoveSecondBack(secondMotorInitialPosition);
+                }
+            }
+
+            if (!isFirstMoveForward && !isSecondMoveForward)
+            {
+                while (firstMotorInitialPosition < firstMotorGoalPosition || secondMotorInitialPosition > secondMotorGoalPosition)
+                {
+                    if (firstMotorInitialPosition != firstMotorGoalPosition)
+                        firstMotorInitialPosition = MoveFirstBack(firstMotorInitialPosition);
+                    if (secondMotorInitialPosition != secondMotorGoalPosition)
+                        secondMotorInitialPosition = MoveSecondBack(secondMotorInitialPosition);
+                }
             }
         }
 
-        //ToDo get data from json
+        private int MoveSecondBack(int secondMotorInitialPosition)
+        {
+            secondMotorInitialPosition = secondMotorInitialPosition - 1;
+            MoveAndSave(2, secondMotorInitialPosition);
+            return secondMotorInitialPosition;
+        }
+
+        private int MoveFirstBack(int firstMotorInitialPosition)
+        {
+            firstMotorInitialPosition = firstMotorInitialPosition - 1;
+            MoveAndSave(1, firstMotorInitialPosition);
+            return firstMotorInitialPosition;
+        }
+
+        private int MoveSecondForward(int secondMotorInitialPosition)
+        {
+            secondMotorInitialPosition = secondMotorInitialPosition + 1;
+            MoveAndSave(2, secondMotorInitialPosition);
+            return secondMotorInitialPosition;
+        }
+
+        private int MoveFirstForward(int firstMotorInitialPosition)
+        {
+            firstMotorInitialPosition = firstMotorInitialPosition + 1;
+            MoveAndSave(1, firstMotorInitialPosition);
+            return firstMotorInitialPosition;
+        }
+
+        private void MoveAndSave(int motorNbr, int motorInitialPosition)
+        {
+            _manipulator.MoveByMotor(motorNbr, motorInitialPosition);
+            _configuration.SaveLastAngle(motorNbr, motorInitialPosition);
+        }
+
         private int GetInitialPosition(int motorNmr)
         {
             var angles = _configuration.GetLastAngles();
 
-            return angles.Where(angle => angle.Key == motorNmr).FirstOrDefault().Value;
+            return angles.Where(angle => angle.Key.Equals(motorNmr.ToString())).FirstOrDefault().Value;
         }
     }
 }
