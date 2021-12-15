@@ -2,6 +2,7 @@
 {
     internal interface IManipulator
     {
-        void MoveByMotor(int motorNmr, int steps);
+        void MoveAndSave(int motorNmr, int steps);
+        void ChangeTwoMotorsAngleOneTime(int firstMotorGoalPosition, int secondMotorGoalPosition);
     }
 }
