@@ -7,3 +7,5 @@ maximum length
 2 motor 300 value
 => 15,5 sm
 
+            int firstMotorGoalPosition = 265;
+            int secondMotorGoalPosition = 315;

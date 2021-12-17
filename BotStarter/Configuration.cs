@@ -7,23 +7,31 @@ namespace BotStarter
     {
         public Dictionary<string, int> GetLastAngles()
         {
-            var configJson = File.ReadAllText(@"..\..\..\angleValues.json");
+            string configJson = File.ReadAllText(@"..\..\..\angleValues.json");
             var servoLastAngle = JObject.Parse(configJson).ToObject<Dictionary<string, int>>();
 
             return servoLastAngle;
         }
 
+        public Dictionary<string, Dictionary<string, int>> GetCoordinates()
+        {
+            string coordinatesJson = File.ReadAllText(@"..\..\..\coordinates.json");
+            var coordinates = JObject.Parse(coordinatesJson).ToObject<Dictionary<string, Dictionary<string, int>>>();
+
+            return coordinates;
+        }
+
         public void SaveLastAngle(int motorNbr, int angleValue)
         {
-            var configJson = File.ReadAllText(@"..\..\..\angleValues.json");
+            string configJson = File.ReadAllText(@"..\..\..\angleValues.json");
             var jsonObj = JObject.Parse(configJson);
             jsonObj[motorNbr.ToString()] = angleValue;
 
             using (StreamWriter file = File.CreateText(@"..\..\..\angleValues.json"))
-
-            using (JsonTextWriter writer = new JsonTextWriter(file))
             {
-                jsonObj.WriteTo(writer);
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Serialize(file, jsonObj);
+                file.Close();
             }
         }
     }

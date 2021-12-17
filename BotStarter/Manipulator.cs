@@ -16,10 +16,11 @@
             _comPortConnector.RotateMotor(motorNmr, steps);
         }
 
-        public void ChangeTwoMotorsAngleOneTime(int firstMotorGoalPosition, int secondMotorGoalPosition)
+        public void ChangeTwoMotorsAngleOneTime(int firstMotorNbr, int secondMotorNmb, int firstMotorGoalPosition, 
+            int secondMotorGoalPosition, int acceleration)
         {
-            int firstMotorInitialPosition = GetInitialPosition(1);
-            int secondMotorInitialPosition = GetInitialPosition(2);
+            int firstMotorInitialPosition = GetInitialPosition(firstMotorNbr);
+            int secondMotorInitialPosition = GetInitialPosition(secondMotorNmb);
 
             bool isFirstMoveForward = true;
             bool isSecondMoveForward = true;
@@ -32,75 +33,91 @@
 
             if (isFirstMoveForward && isSecondMoveForward)
             {
-                while (firstMotorInitialPosition < firstMotorGoalPosition || secondMotorInitialPosition < secondMotorGoalPosition)
+                while (firstMotorInitialPosition <= firstMotorGoalPosition || secondMotorInitialPosition <= secondMotorGoalPosition)
                 {
-                    if (firstMotorInitialPosition != firstMotorGoalPosition)
-                        firstMotorInitialPosition = MoveFirstForward(firstMotorInitialPosition);
-                    if (secondMotorInitialPosition != secondMotorGoalPosition)
-                        secondMotorInitialPosition = MoveSecondForward(secondMotorInitialPosition);
+                    if (firstMotorInitialPosition <= firstMotorGoalPosition)
+                        firstMotorInitialPosition = MoveForward(firstMotorNbr, firstMotorInitialPosition, acceleration);
+                    if (secondMotorInitialPosition <= secondMotorGoalPosition)
+                        secondMotorInitialPosition = MoveForward(secondMotorNmb, secondMotorInitialPosition, acceleration);
                 }
             }
 
             if (!isFirstMoveForward && isSecondMoveForward)
             {
-                while (firstMotorInitialPosition > firstMotorGoalPosition || secondMotorInitialPosition < secondMotorGoalPosition)
+                while (firstMotorInitialPosition >= firstMotorGoalPosition || secondMotorInitialPosition <= secondMotorGoalPosition)
                 {
-                    if (firstMotorInitialPosition != firstMotorGoalPosition)
-                        firstMotorInitialPosition = MoveFirstBack(firstMotorInitialPosition);
-                    if (secondMotorInitialPosition != secondMotorGoalPosition)
-                        secondMotorInitialPosition = MoveSecondForward(secondMotorInitialPosition);
+                    if (firstMotorInitialPosition >= firstMotorGoalPosition)
+                        firstMotorInitialPosition = MoveBack(firstMotorNbr, firstMotorInitialPosition, acceleration);
+                    if (secondMotorInitialPosition <= secondMotorGoalPosition)
+                        secondMotorInitialPosition = MoveForward(secondMotorNmb, secondMotorInitialPosition, acceleration);
                 }
             }
 
             if (isFirstMoveForward && !isSecondMoveForward)
             {
-                while (firstMotorInitialPosition < firstMotorGoalPosition || secondMotorInitialPosition > secondMotorGoalPosition)
+                while (firstMotorInitialPosition <= firstMotorGoalPosition || secondMotorInitialPosition >= secondMotorGoalPosition)
                 {
-                    if (firstMotorInitialPosition != firstMotorGoalPosition)
-                        firstMotorInitialPosition = MoveFirstForward(firstMotorInitialPosition);
-                    if (secondMotorInitialPosition != secondMotorGoalPosition)
-                        secondMotorInitialPosition = MoveSecondBack(secondMotorInitialPosition);
+                    if (firstMotorInitialPosition <= firstMotorGoalPosition)
+                        firstMotorInitialPosition = MoveForward(firstMotorNbr, firstMotorInitialPosition, acceleration);
+                    if (secondMotorInitialPosition >= secondMotorGoalPosition)
+                        secondMotorInitialPosition = MoveBack(secondMotorNmb, secondMotorInitialPosition, acceleration);
                 }
             }
 
             if (!isFirstMoveForward && !isSecondMoveForward)
             {
-                while (firstMotorInitialPosition < firstMotorGoalPosition || secondMotorInitialPosition > secondMotorGoalPosition)
+                while (firstMotorInitialPosition <= firstMotorGoalPosition || secondMotorInitialPosition >= secondMotorGoalPosition)
                 {
-                    if (firstMotorInitialPosition != firstMotorGoalPosition)
-                        firstMotorInitialPosition = MoveFirstBack(firstMotorInitialPosition);
-                    if (secondMotorInitialPosition != secondMotorGoalPosition)
-                        secondMotorInitialPosition = MoveSecondBack(secondMotorInitialPosition);
+                    if (firstMotorInitialPosition <= firstMotorGoalPosition)
+                        firstMotorInitialPosition = MoveBack(firstMotorNbr, firstMotorInitialPosition, acceleration);
+                    if (secondMotorInitialPosition >= secondMotorGoalPosition)
+                        secondMotorInitialPosition = MoveBack(secondMotorNmb, secondMotorInitialPosition, acceleration);
                 }
             }
         }
 
-        private int MoveSecondBack(int secondMotorInitialPosition)
+        public void ChangeMotorAngle(int motorNbr, int motorGoalPosition, int acceleration)
         {
-            secondMotorInitialPosition = secondMotorInitialPosition - 1;
-            MoveAndSave(2, secondMotorInitialPosition);
-            return secondMotorInitialPosition;
+            int motorInitialPosition = GetInitialPosition(motorNbr);
+
+            bool isFirstMoveForward = true;
+
+            int amountOfFirstMotorSteps = motorGoalPosition - motorInitialPosition;
+
+            if (amountOfFirstMotorSteps < 0) isFirstMoveForward = false;
+
+            if (isFirstMoveForward)
+            {
+                while (motorInitialPosition <= motorGoalPosition)
+                {
+                    if (motorInitialPosition <= motorGoalPosition)
+                        motorInitialPosition = MoveForward(motorNbr, motorInitialPosition, acceleration);
+                }
+            }
+
+            if (!isFirstMoveForward)
+            {
+                while (motorInitialPosition >= motorGoalPosition)
+                {
+                    if (motorInitialPosition >= motorGoalPosition)
+                        motorInitialPosition = MoveBack(motorNbr, motorInitialPosition, acceleration);
+                }
+            }
         }
 
-        private int MoveFirstBack(int firstMotorInitialPosition)
+        private int MoveBack(int motorNbr, int motorInitialPosition, int acceleration)
         {
-            firstMotorInitialPosition = firstMotorInitialPosition - 1;
-            MoveAndSave(1, firstMotorInitialPosition);
-            return firstMotorInitialPosition;
+            motorInitialPosition = motorInitialPosition - acceleration;
+            MoveAndSave(motorNbr, motorInitialPosition);
+            Console.WriteLine(motorInitialPosition);
+            return motorInitialPosition;
         }
-
-        private int MoveSecondForward(int secondMotorInitialPosition)
+        private int MoveForward(int motorNbr, int motorInitialPosition, int acceleration)
         {
-            secondMotorInitialPosition = secondMotorInitialPosition + 1;
-            MoveAndSave(2, secondMotorInitialPosition);
-            return secondMotorInitialPosition;
-        }
-
-        private int MoveFirstForward(int firstMotorInitialPosition)
-        {
-            firstMotorInitialPosition = firstMotorInitialPosition + 1;
-            MoveAndSave(1, firstMotorInitialPosition);
-            return firstMotorInitialPosition;
+            motorInitialPosition = motorInitialPosition + acceleration;
+            MoveAndSave(motorNbr, motorInitialPosition);
+            Console.WriteLine(motorInitialPosition);
+            return motorInitialPosition;
         }
 
         public void MoveAndSave(int motorNbr, int motorInitialPosition)
