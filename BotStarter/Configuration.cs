@@ -7,7 +7,12 @@ namespace BotStarter
     {
         public Dictionary<string, int> GetLastAngles()
         {
-            string configJson = File.ReadAllText(@"..\..\..\angleValues.json");
+            string fileName = "angleValues.json";
+            string solutiondir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName;
+            string path = Path.Combine(solutiondir, fileName);
+
+            string configJson = File.ReadAllText(path);
+
             var servoLastAngle = JObject.Parse(configJson).ToObject<Dictionary<string, int>>();
 
             return servoLastAngle;
@@ -15,19 +20,26 @@ namespace BotStarter
 
         public Dictionary<string, Dictionary<string, int>> GetCoordinates()
         {
-            string coordinatesJson = File.ReadAllText(@"..\..\..\coordinates.json");
-            var coordinates = JObject.Parse(coordinatesJson).ToObject<Dictionary<string, Dictionary<string, int>>>();
+            string fileName = "coordinates.json";
+            string solutiondir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName;
+            string path = Path.Combine(solutiondir, fileName);
+
+            var coordinates = JObject.Parse(path).ToObject<Dictionary<string, Dictionary<string, int>>>();
 
             return coordinates;
         }
 
         public void SaveLastAngle(int motorNbr, int angleValue)
         {
-            string configJson = File.ReadAllText(@"..\..\..\angleValues.json");
+            string fileName = "angleValues.json";
+            string solutiondir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName;
+            string path = Path.Combine(solutiondir, fileName);
+
+            string configJson = File.ReadAllText(path);
             var jsonObj = JObject.Parse(configJson);
             jsonObj[motorNbr.ToString()] = angleValue;
 
-            using (StreamWriter file = File.CreateText(@"..\..\..\angleValues.json"))
+            using (StreamWriter file = File.CreateText(path))
             {
                 JsonSerializer serializer = new JsonSerializer();
                 serializer.Serialize(file, jsonObj);
