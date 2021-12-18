@@ -7,8 +7,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="263" Width="500">
     <Grid Margin="0,0,0,1">
-        <Slider x:Name="ClickMotorSlider" HorizontalAlignment="Left" Margin="278,97,0,0" VerticalAlignment="Top" Width="120" ValueChanged="RightSlider_ValueChanged" Maximum="400" Minimum="100"/>
-        <Slider x:Name="RotateMotorSlider" HorizontalAlignment="Left" Margin="108,97,0,0" VerticalAlignment="Top" Width="120" ValueChanged="LeftSlider_ValueChanged" Maximum="500" Minimum="100"/>
+        <Slider x:Name="ClickMotorSlider" HorizontalAlignment="Left" Margin="278,97,0,0" VerticalAlignment="Top" Width="120" ValueChanged="ClickMotorSlider_ValueChanged" Maximum="400" Minimum="100"/>
+        <Slider x:Name="RotateMotorSlider" HorizontalAlignment="Left" Margin="108,97,0,0" VerticalAlignment="Top" Width="120" ValueChanged="RotateMotorSlider_ValueChanged" Maximum="500" Minimum="100"/>
         <Slider x:Name="SecondMotorSlider" HorizontalAlignment="Left" Margin="206,97,0,0" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.5,0.5" ValueChanged="SecondMotorSlider_ValueChanged" Maximum="315" Minimum="100">
             <Slider.RenderTransform>
                 <TransformGroup>
@@ -29,12 +29,13 @@
                 </TransformGroup>
             </Slider.RenderTransform>
         </Slider>
-        <TextBox x:Name="ClickMotorTextBox" HorizontalAlignment="Left" Margin="422,97,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="60" TextChanged="RightTextBox_TextChanged"/>
-        <TextBox x:Name="RotateMotorTextBox" HorizontalAlignment="Left" Margin="17,97,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="60" TextChanged="LeftTextBox_TextChanged"/>
-        <TextBox x:Name="FirstMotorTextBox" HorizontalAlignment="Left" Margin="181,12,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="60" TextChanged="UpTextBox_TextChanged"/>
-        <TextBox x:Name="SecondMotorTextBox" HorizontalAlignment="Left" Margin="265,182,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="60" TextChanged="DownTextBox_TextChanged"/>
+        <TextBox x:Name="ClickMotorTextBox" HorizontalAlignment="Left" Margin="422,97,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" TextChanged="ClickMotorTextBox_TextChanged"/>
+        <TextBox x:Name="RotateMotorTextBox" HorizontalAlignment="Left" Margin="17,97,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" TextChanged="RotateMotorTextBox_TextChanged"/>
+        <TextBox x:Name="FirstMotorTextBox" HorizontalAlignment="Left" Margin="181,12,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" TextChanged="FirstMotorTextBox_TextChanged"/>
+        <TextBox x:Name="SecondMotorTextBox" HorizontalAlignment="Left" Margin="265,182,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" TextChanged="SecondMotorTextBox_TextChanged"/>
         <Button x:Name="LoadButton" Content="Load" HorizontalAlignment="Left" Margin="63,200,0,0" VerticalAlignment="Top" Width="60" Click="LoadButton_Click"/>
         <Button x:Name="SaveButton" Content="Save" HorizontalAlignment="Left" Margin="392,200,0,0" VerticalAlignment="Top" Width="60" Click="SaveButton_Click"/>
+        <Button x:Name="Process" Content="Process" HorizontalAlignment="Left" Margin="163,200,0,0" VerticalAlignment="Top" Width="60" Click="Process_Click"/>
 
     </Grid>
 </Window>
