@@ -1,6 +1,6 @@
 ﻿namespace BotStarter
 {
-    internal interface IManipulator
+    public interface IManipulator
     {
         void MoveAndSave(int motorNmr, int steps);
         void ChangeTwoMotorsAngleOneTime(int firstMotorNbr, int secondMotorNmb, int firstMotorGoalPosition, 

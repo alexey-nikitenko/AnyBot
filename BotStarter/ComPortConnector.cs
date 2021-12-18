@@ -2,7 +2,7 @@
 
 namespace BotStarter
 {
-    internal class ComPortConnector : IComPortConnector
+    public class ComPortConnector : IComPortConnector
     {
         public void RotateMotor(int motorIndex, int magicNumber)
         {

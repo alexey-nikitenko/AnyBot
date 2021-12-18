@@ -1,6 +1,6 @@
 ﻿namespace BotStarter
 {
-    internal class Manipulator : IManipulator
+    public class Manipulator : IManipulator
     {
         IComPortConnector _comPortConnector;
         IConfiguration _configuration;

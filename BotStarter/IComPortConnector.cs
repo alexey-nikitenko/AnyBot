@@ -1,6 +1,6 @@
 ﻿namespace BotStarter
 {
-    internal interface IComPortConnector
+    public interface IComPortConnector
     {
         void RotateMotor(int motorIndex, int magicNumber);
     }

@@ -9,8 +9,11 @@ namespace WpfUi
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        IRunApp _runApp;
+
+        public MainWindow(IRunApp runApp)
         {
+            _runApp = runApp;
             InitializeComponent();
         }
 
@@ -21,9 +24,7 @@ namespace WpfUi
 
         private void LoadInitialAnglesValues()
         {
-            Configuration configuration = new Configuration();
-
-            var lastAngles = configuration.GetLastAngles();
+            var lastAngles = _runApp.GetLastCoordinates();
 
             FirstMotorTextBox.Text = lastAngles["1"].ToString();
             FirstMotorSlider.Value = lastAngles["1"];
@@ -94,6 +95,7 @@ namespace WpfUi
 
         private void Process_Click(object sender, RoutedEventArgs e)
         {
+            _runApp.MoveAndSave(1, (int)FirstMotorSlider.Value);
 
         }
     }

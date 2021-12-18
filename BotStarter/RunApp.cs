@@ -1,6 +1,6 @@
 ﻿namespace BotStarter
 {
-    internal class RunApp : IRunApp
+    public class RunApp : IRunApp
     {
         IManipulator _manipulator;
         IConfiguration _configuration;
@@ -27,6 +27,11 @@
             }
         }
 
+        public Dictionary<string, int> GetLastCoordinates()
+        {
+            return _configuration.GetLastAngles();
+        }
+
         private void BackToMovablePosition()
         {
             _manipulator.ChangeMotorAngle(2, 325, 4);
@@ -49,6 +54,11 @@
         {
             _manipulator.ChangeTwoMotorsAngleOneTime(2, 3, 310, motorGoalPosition, 40);
             _manipulator.ChangeMotorAngle(3, 400, 40);
+        }
+
+        public void MoveAndSave(int v, int value)
+        {
+            _manipulator.ChangeMotorAngle(v, value, 10);
         }
     }
 }
