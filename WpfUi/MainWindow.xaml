@@ -36,6 +36,12 @@
         <Button x:Name="LoadButton" Content="Load" HorizontalAlignment="Left" Margin="63,200,0,0" VerticalAlignment="Top" Width="60" Click="LoadButton_Click"/>
         <Button x:Name="SaveButton" Content="Save" HorizontalAlignment="Left" Margin="392,200,0,0" VerticalAlignment="Top" Width="60" Click="SaveButton_Click"/>
         <Button x:Name="Process" Content="Process" HorizontalAlignment="Left" Margin="163,200,0,0" VerticalAlignment="Top" Width="60" Click="Process_Click"/>
+        <Label Content="First motor" HorizontalAlignment="Left" Margin="181,30,0,0" VerticalAlignment="Top" Height="20" Width="53" FontSize="8"/>
+        <Label Content="Second motor" HorizontalAlignment="Left" Margin="265,161,0,0" VerticalAlignment="Top" Width="60" FontSize="8"/>
+        <Label Content="Rotate" HorizontalAlignment="Left" Margin="140,83,0,0" VerticalAlignment="Top" FontSize="8"/>
+        <Label Content="Click" HorizontalAlignment="Left" Margin="333,85,0,0" VerticalAlignment="Top" FontSize="8"/>
+        <TextBox x:Name="ButtonName" HorizontalAlignment="Left" Margin="381,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" TextChanged="ButtonName_TextChanged"/>
+        <Label Content="Button Name" HorizontalAlignment="Left" Margin="319,10,0,0" VerticalAlignment="Top" FontSize="8"/>
 
     </Grid>
 </Window>

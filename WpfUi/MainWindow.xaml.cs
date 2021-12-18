@@ -1,5 +1,7 @@
 ﻿using BotStarter;
+using BotStarter.Models;
 using System;
+using System.Collections.Generic;
 using System.Windows;
 
 namespace WpfUi
@@ -90,12 +92,32 @@ namespace WpfUi
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            CoordinatesModel coordinatesModel = new CoordinatesModel();
 
+            Dictionary<string, int> dictionary = new Dictionary<string, int>();
+
+            dictionary.Add("1", (int)FirstMotorSlider.Value);
+            dictionary.Add("2", (int)SecondMotorSlider.Value);
+            dictionary.Add("3", (int)RotateMotorSlider.Value);
+            dictionary.Add("4", (int)ClickMotorSlider.Value);
+
+            coordinatesModel.Name = ButtonName.Text;
+            coordinatesModel.Coordinates = dictionary;
+
+            _runApp.SaveCoordinates(coordinatesModel);
         }
 
         private void Process_Click(object sender, RoutedEventArgs e)
         {
             _runApp.MoveAndSave(1, (int)FirstMotorSlider.Value);
+            _runApp.MoveAndSave(2, (int)SecondMotorSlider.Value);
+            _runApp.MoveAndSave(3, (int)ClickMotorSlider.Value);
+            _runApp.MoveAndSave(4, (int)RotateMotorSlider.Value);
+
+        }
+
+        private void ButtonName_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
 
         }
     }

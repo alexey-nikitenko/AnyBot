@@ -1,4 +1,6 @@
-﻿namespace BotStarter
+﻿using BotStarter.Models;
+
+namespace BotStarter
 {
     public class RunApp : IRunApp
     {
@@ -19,10 +21,12 @@
             {
                 BackToMovablePosition();
 
-                FindAndClickButton(coordinates["tab"]);
+                FindAndClickButton(coordinates.Where(x => x.Name.Equals("tab"))
+                    .Select(i => i.Coordinates).FirstOrDefault());
                 BackToMovablePosition();
 
-                FindAndClickButton(coordinates["2"]);
+                FindAndClickButton(coordinates.Where(x => x.Name.Equals("2"))
+                    .Select(i => i.Coordinates).FirstOrDefault());
                 BackToMovablePosition();
             }
         }
@@ -30,6 +34,11 @@
         public Dictionary<string, int> GetLastCoordinates()
         {
             return _configuration.GetLastAngles();
+        }
+
+        public void SaveCoordinates(CoordinatesModel coordinatesModel)
+        {
+            _configuration.SaveCoordinates(coordinatesModel);
         }
 
         private void BackToMovablePosition()

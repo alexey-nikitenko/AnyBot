@@ -23,6 +23,7 @@ namespace WpfUi
             services.AddScoped<BotStarter.IComPortConnector, BotStarter.ComPortConnector>();
             services.AddScoped<BotStarter.IConfiguration, BotStarter.Configuration>();
             services.AddSingleton<MainWindow>();
+            services.AddSingleton<BotStarter.Models.CoordinatesModel>();
         }
 
         private void OnStartup(object sender, StartupEventArgs e)
