@@ -1,5 +1,6 @@
 ﻿using BotStarter.HardwareInteraction;
 using BotStarter.Models;
+using ImageRecognition;
 
 namespace BotStarter
 {
@@ -7,11 +8,13 @@ namespace BotStarter
     {
         IManipulator _manipulator;
         IConfiguration _configuration;
+        IEmguCvProcessor _emguCvProcessor;
 
-        public RunApp(IManipulator manipulator, IConfiguration configuration)
+        public RunApp(IManipulator manipulator, IConfiguration configuration, IEmguCvProcessor emguCvProcessor)
         {
             _manipulator = manipulator;
             _configuration = configuration;
+            _emguCvProcessor = emguCvProcessor;
         }
 
         public void Run()
@@ -24,7 +27,9 @@ namespace BotStarter
             {
                 BackToMovablePosition();
 
-                ClickAndBack(coordinates, "7");
+                var coords = _emguCvProcessor.GetCoordinates(@"E:\Temp\30percentHealth.png");
+
+                if(coords.X > 0) ClickAndBack(coordinates, "7");
                 //ClickAndBack(coordinates, "tab");
                 BackToMovablePosition();
 

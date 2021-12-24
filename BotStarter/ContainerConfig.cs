@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using BotStarter.HardwareInteraction;
+using ImageRecognition;
 
 namespace BotStarter
 {
@@ -13,6 +14,7 @@ namespace BotStarter
             builder.RegisterType<Manipulator>().As<IManipulator>();
             builder.RegisterType<RunApp>().As<IRunApp>();
             builder.RegisterType<Configuration>().As<IConfiguration>();
+            builder.RegisterType<EmguCvProcessor>().As<IEmguCvProcessor>();
 
             return builder.Build();
         }
