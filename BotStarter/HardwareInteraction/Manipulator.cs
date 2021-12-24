@@ -1,4 +1,4 @@
-﻿namespace BotStarter
+﻿namespace BotStarter.HardwareInteraction
 {
     public class Manipulator : IManipulator
     {
@@ -16,11 +16,11 @@
             _comPortConnector.RotateMotor(motorNmr, steps);
         }
 
-        public void ChangeTwoMotorsAngleOneTime(int firstMotorNbr, int secondMotorNmb, int firstMotorGoalPosition, 
+        public void ChangeTwoMotorsAngleOneTime(int firstMotorNbr, int secondMotorNbr, int firstMotorGoalPosition, 
             int secondMotorGoalPosition, int acceleration)
         {
             int firstMotorInitialPosition = GetInitialPosition(firstMotorNbr);
-            int secondMotorInitialPosition = GetInitialPosition(secondMotorNmb);
+            int secondMotorInitialPosition = GetInitialPosition(secondMotorNbr);
 
             bool isFirstMoveForward = true;
             bool isSecondMoveForward = true;
@@ -33,45 +33,105 @@
 
             if (isFirstMoveForward && isSecondMoveForward)
             {
-                while (firstMotorInitialPosition <= firstMotorGoalPosition || secondMotorInitialPosition <= secondMotorGoalPosition)
+                while (firstMotorInitialPosition < firstMotorGoalPosition || secondMotorInitialPosition < secondMotorGoalPosition)
                 {
                     if (firstMotorInitialPosition <= firstMotorGoalPosition)
+                    {
+                        if (firstMotorInitialPosition + acceleration > firstMotorGoalPosition && firstMotorNbr != 3)
+                        {
+                            acceleration = 1;
+                        }
+
                         firstMotorInitialPosition = MoveForward(firstMotorNbr, firstMotorInitialPosition, acceleration);
+                    }
+
                     if (secondMotorInitialPosition <= secondMotorGoalPosition)
-                        secondMotorInitialPosition = MoveForward(secondMotorNmb, secondMotorInitialPosition, acceleration);
+                    {
+                        if (secondMotorInitialPosition + acceleration > secondMotorGoalPosition && secondMotorNbr != 3)
+                        {
+                            acceleration = 1;
+                        }
+
+                        secondMotorInitialPosition = MoveForward(secondMotorNbr, secondMotorInitialPosition, acceleration);
+                    }
                 }
             }
 
             if (!isFirstMoveForward && isSecondMoveForward)
             {
-                while (firstMotorInitialPosition >= firstMotorGoalPosition || secondMotorInitialPosition <= secondMotorGoalPosition)
+                while (firstMotorInitialPosition > firstMotorGoalPosition || secondMotorInitialPosition < secondMotorGoalPosition)
                 {
                     if (firstMotorInitialPosition >= firstMotorGoalPosition)
+                    {
+                        if (firstMotorInitialPosition - acceleration < firstMotorGoalPosition && firstMotorNbr != 3)
+                        {
+                            acceleration = 1;
+                        }
+
                         firstMotorInitialPosition = MoveBack(firstMotorNbr, firstMotorInitialPosition, acceleration);
+                    }
+
                     if (secondMotorInitialPosition <= secondMotorGoalPosition)
-                        secondMotorInitialPosition = MoveForward(secondMotorNmb, secondMotorInitialPosition, acceleration);
+                    {
+                        if (secondMotorInitialPosition + acceleration > secondMotorGoalPosition && secondMotorNbr != 3)
+                        {
+                            acceleration = 1;
+                        }
+
+                        secondMotorInitialPosition = MoveForward(secondMotorNbr, secondMotorInitialPosition, acceleration);
+                    }
                 }
             }
 
             if (isFirstMoveForward && !isSecondMoveForward)
             {
-                while (firstMotorInitialPosition <= firstMotorGoalPosition || secondMotorInitialPosition >= secondMotorGoalPosition)
+                while (firstMotorInitialPosition < firstMotorGoalPosition || secondMotorInitialPosition > secondMotorGoalPosition)
                 {
                     if (firstMotorInitialPosition <= firstMotorGoalPosition)
+                    {
+                        if (firstMotorInitialPosition + acceleration > firstMotorGoalPosition && firstMotorNbr != 3)
+                        {
+                            acceleration = 1;
+                        }
+
                         firstMotorInitialPosition = MoveForward(firstMotorNbr, firstMotorInitialPosition, acceleration);
+                    }
+
                     if (secondMotorInitialPosition >= secondMotorGoalPosition)
-                        secondMotorInitialPosition = MoveBack(secondMotorNmb, secondMotorInitialPosition, acceleration);
+                    {
+                        if (secondMotorInitialPosition - acceleration < secondMotorGoalPosition && secondMotorNbr != 3)
+                        {
+                            acceleration = 1;
+                        }
+
+                        secondMotorInitialPosition = MoveBack(secondMotorNbr, secondMotorInitialPosition, acceleration);
+                    }
+                        
                 }
             }
 
             if (!isFirstMoveForward && !isSecondMoveForward)
             {
-                while (firstMotorInitialPosition <= firstMotorGoalPosition || secondMotorInitialPosition >= secondMotorGoalPosition)
+                while (firstMotorInitialPosition < firstMotorGoalPosition || secondMotorInitialPosition > secondMotorGoalPosition)
                 {
-                    if (firstMotorInitialPosition <= firstMotorGoalPosition)
+                    if (firstMotorInitialPosition >= firstMotorGoalPosition)
+                    {
+                        if (firstMotorInitialPosition - acceleration < firstMotorGoalPosition && firstMotorNbr != 3)
+                        {
+                            acceleration = 1;
+                        }
+
                         firstMotorInitialPosition = MoveBack(firstMotorNbr, firstMotorInitialPosition, acceleration);
+                    }
                     if (secondMotorInitialPosition >= secondMotorGoalPosition)
-                        secondMotorInitialPosition = MoveBack(secondMotorNmb, secondMotorInitialPosition, acceleration);
+                    {
+                        if (secondMotorInitialPosition - acceleration < secondMotorGoalPosition && secondMotorNbr != 3)
+                        {
+                            acceleration = 1;
+                        }
+
+                        secondMotorInitialPosition = MoveBack(secondMotorNbr, secondMotorInitialPosition, acceleration);
+                    }
                 }
             }
         }
@@ -88,8 +148,11 @@
 
             if (isFirstMoveForward)
             {
-                while (motorInitialPosition <= motorGoalPosition)
+                while (motorInitialPosition < motorGoalPosition)
                 {
+                    if (motorInitialPosition + acceleration > motorGoalPosition && motorNbr != 3) 
+                        acceleration = 1;
+
                     if (motorInitialPosition <= motorGoalPosition)
                         motorInitialPosition = MoveForward(motorNbr, motorInitialPosition, acceleration);
                 }
@@ -97,8 +160,11 @@
 
             if (!isFirstMoveForward)
             {
-                while (motorInitialPosition >= motorGoalPosition)
+                while (motorInitialPosition > motorGoalPosition)
                 {
+                    if (motorInitialPosition - acceleration < motorGoalPosition && motorNbr != 3)
+                        acceleration = 1;
+
                     if (motorInitialPosition >= motorGoalPosition)
                         motorInitialPosition = MoveBack(motorNbr, motorInitialPosition, acceleration);
                 }

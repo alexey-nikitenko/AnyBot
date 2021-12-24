@@ -6,7 +6,7 @@ namespace BotStarter
     public interface IConfiguration
     {
         Dictionary<string, int> GetLastAngles();
-        List<CoordinatesModel> GetCoordinates();
+        Dictionary<string, Dictionary<string, int>> GetCoordinates();
         void SaveCoordinates(CoordinatesModel coordinatesModel);
         void SaveLastAngle(int motorNbr, int angleValue);
     }

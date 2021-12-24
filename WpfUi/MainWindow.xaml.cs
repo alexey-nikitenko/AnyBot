@@ -98,8 +98,8 @@ namespace WpfUi
 
             dictionary.Add("1", (int)FirstMotorSlider.Value);
             dictionary.Add("2", (int)SecondMotorSlider.Value);
-            dictionary.Add("3", (int)RotateMotorSlider.Value);
-            dictionary.Add("4", (int)ClickMotorSlider.Value);
+            dictionary.Add("3", (int)ClickMotorSlider.Value);
+            dictionary.Add("4", (int)RotateMotorSlider.Value);
 
             coordinatesModel.Name = ButtonName.Text;
             coordinatesModel.Coordinates = dictionary;

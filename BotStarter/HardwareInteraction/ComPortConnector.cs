@@ -1,6 +1,6 @@
 ﻿using System.IO.Ports;
 
-namespace BotStarter
+namespace BotStarter.HardwareInteraction
 {
     public class ComPortConnector : IComPortConnector
     {
@@ -12,7 +12,7 @@ namespace BotStarter
             {
                 if (portName != null)
                 {
-                    SerialPort port = new SerialPort(portName, 9600, Parity.None, 8, StopBits.One);
+                    SerialPort port = new SerialPort(portName, 115200, Parity.None, 8, StopBits.One);
                     port.Open();
                     port.WriteLine($"{motorIndex} {magicNumber}#");
                     port.Close();

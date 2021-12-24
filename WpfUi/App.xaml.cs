@@ -19,8 +19,8 @@ namespace WpfUi
         private void ConfigureServices(ServiceCollection services)
         {
             services.AddScoped<BotStarter.IRunApp, BotStarter.RunApp>();
-            services.AddScoped<BotStarter.IManipulator, BotStarter.Manipulator>();
-            services.AddScoped<BotStarter.IComPortConnector, BotStarter.ComPortConnector>();
+            services.AddScoped<BotStarter.HardwareInteraction.IManipulator, BotStarter.HardwareInteraction.Manipulator>();
+            services.AddScoped<BotStarter.HardwareInteraction.IComPortConnector, BotStarter.HardwareInteraction.ComPortConnector>();
             services.AddScoped<BotStarter.IConfiguration, BotStarter.Configuration>();
             services.AddSingleton<MainWindow>();
             services.AddSingleton<BotStarter.Models.CoordinatesModel>();

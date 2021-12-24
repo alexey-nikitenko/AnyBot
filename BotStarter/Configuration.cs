@@ -19,13 +19,14 @@ namespace BotStarter
             return servoLastAngle;
         }
 
-        public List<CoordinatesModel> GetCoordinates()
+        public Dictionary<string, Dictionary<string, int>> GetCoordinates()
         {
             string fileName = "coordinates.json";
             string solutiondir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName;
             string path = Path.Combine(solutiondir, fileName);
+            string coordinatesJson = File.ReadAllText(path);
 
-            var coordinates = JObject.Parse(path).ToObject<List<CoordinatesModel>>();
+            var coordinates = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, int>>>(coordinatesJson);
 
             return coordinates;
         }

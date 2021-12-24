@@ -1,4 +1,4 @@
-﻿namespace BotStarter
+﻿namespace BotStarter.HardwareInteraction
 {
     public interface IManipulator
     {
