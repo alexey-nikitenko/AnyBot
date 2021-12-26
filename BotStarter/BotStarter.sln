@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BotStarter", "BotStarter.cs
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfUi", "..\WpfUi\WpfUi.csproj", "{C07EE16B-109E-465A-BBC0-DAB5D6E6E6EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageRecognition", "..\ImageRecognition\ImageRecognition.csproj", "{0F7B41A6-8858-4BF2-9176-162641ACA238}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageRecognition", "..\ImageRecognition\ImageRecognition.csproj", "{6D5A35BB-C053-470F-B400-77D4D0AA78D4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{C07EE16B-109E-465A-BBC0-DAB5D6E6E6EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C07EE16B-109E-465A-BBC0-DAB5D6E6E6EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C07EE16B-109E-465A-BBC0-DAB5D6E6E6EB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0F7B41A6-8858-4BF2-9176-162641ACA238}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0F7B41A6-8858-4BF2-9176-162641ACA238}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0F7B41A6-8858-4BF2-9176-162641ACA238}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0F7B41A6-8858-4BF2-9176-162641ACA238}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D5A35BB-C053-470F-B400-77D4D0AA78D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D5A35BB-C053-470F-B400-77D4D0AA78D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D5A35BB-C053-470F-B400-77D4D0AA78D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D5A35BB-C053-470F-B400-77D4D0AA78D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
