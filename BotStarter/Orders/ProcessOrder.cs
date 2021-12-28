@@ -1,20 +1,26 @@
 ﻿using BotStarter.HardwareInteraction;
+using ImageRecognition;
+
 namespace BotStarter.Orders
 {
     internal class ProcessOrder : IProcessOrder
     {
         IManipulator _manipulator;
         IConfiguration _configuration;
+        IEmguCvProcessor _emguCvProcessor;
 
+        string solutiondir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName;
         private volatile bool isClickContinue = false;
         private volatile Dictionary<string, int> item = null;
         int pauseGlobal = 0;
         Thread sender;
 
-        public ProcessOrder(IManipulator manipulator, IConfiguration configuration)
+        public ProcessOrder(IManipulator manipulator, IConfiguration configuration
+            ,IEmguCvProcessor emguCvProcessor)
         {
             _manipulator = manipulator;
             _configuration = configuration;
+            _emguCvProcessor = emguCvProcessor;
         }
 
         public void RunOrder(string order)
@@ -70,7 +76,27 @@ namespace BotStarter.Orders
 
         private void Follow()
         {
-            throw new NotImplementedException();
+            string path = Path.Combine(solutiondir, "images");
+            string squadImage = Path.Combine(path, "Squad", "squad.png");
+            Coordinates coordinates = _emguCvProcessor.GetCoordinates(squadImage);
+            WindowHelper.BringWindowToFront();
+            WindowHelper.SetCursorPosition(coordinates.X + 50, coordinates.Y + 50);
+            _manipulator.ChangeMotorAngle(15, 400, 10);
+            _manipulator.ChangeMotorAngle(15, 200, 10);
+            _manipulator.ChangeMotorAngle(15, 400, 10);
+            WindowHelper.BringWindowToFront();
+
+            Thread.Sleep(1000);
+
+            string followImage = Path.Combine(path, "Follow", "follow.png");
+            Coordinates followCoordinates = _emguCvProcessor.GetCoordinates(followImage);
+            WindowHelper.BringWindowToFront();
+            WindowHelper.SetCursorPosition(followCoordinates.X + 10, followCoordinates.Y + 10);
+            _manipulator.ChangeMotorAngle(14, 0, 10);
+            _manipulator.ChangeMotorAngle(14, 400, 10);
+            _manipulator.ChangeMotorAngle(14, 0, 10);
+            //WindowHelper.BringWindowToFront();
+
         }
 
         private void ClickAndBack(Dictionary<string, Dictionary<string, int>> coordinates, string button, int pause = 0)

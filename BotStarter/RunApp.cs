@@ -1,5 +1,6 @@
 ﻿using BotStarter.HardwareInteraction;
 using BotStarter.Models;
+using BotStarter.MousePointer;
 using ImageRecognition;
 using SpeechRecognition;
 
@@ -9,17 +10,14 @@ namespace BotStarter
     {
         IManipulator _manipulator;
         IConfiguration _configuration;
-        IEmguCvProcessor _emguCvProcessor;
         ISpeechRecognitionProcessor _speechRecognitionProcessor;
 
         string solutiondir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName;
 
-        public RunApp(IManipulator manipulator, IConfiguration configuration, 
-            IEmguCvProcessor emguCvProcessor, ISpeechRecognitionProcessor speechRecognitionProcessor)
+        public RunApp(IManipulator manipulator, IConfiguration configuration, ISpeechRecognitionProcessor speechRecognitionProcessor)
         {
             _manipulator = manipulator;
             _configuration = configuration;
-            _emguCvProcessor = emguCvProcessor;
             _speechRecognitionProcessor = speechRecognitionProcessor;
         }
 
