@@ -1,6 +1,8 @@
 ﻿using Autofac;
 using BotStarter.HardwareInteraction;
+using BotStarter.Orders;
 using ImageRecognition;
+using SpeechRecognition;
 
 namespace BotStarter
 {
@@ -15,6 +17,8 @@ namespace BotStarter
             builder.RegisterType<RunApp>().As<IRunApp>();
             builder.RegisterType<Configuration>().As<IConfiguration>();
             builder.RegisterType<EmguCvProcessor>().As<IEmguCvProcessor>();
+            builder.RegisterType<SpeechRecognitionProcessor>().As<ISpeechRecognitionProcessor>();
+            builder.RegisterType<ProcessOrder>().As<IProcessOrder>();
 
             return builder.Build();
         }

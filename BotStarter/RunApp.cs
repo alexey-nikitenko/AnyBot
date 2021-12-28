@@ -1,6 +1,7 @@
 ﻿using BotStarter.HardwareInteraction;
 using BotStarter.Models;
 using ImageRecognition;
+using SpeechRecognition;
 
 namespace BotStarter
 {
@@ -9,13 +10,17 @@ namespace BotStarter
         IManipulator _manipulator;
         IConfiguration _configuration;
         IEmguCvProcessor _emguCvProcessor;
+        ISpeechRecognitionProcessor _speechRecognitionProcessor;
+
         string solutiondir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName;
 
-        public RunApp(IManipulator manipulator, IConfiguration configuration, IEmguCvProcessor emguCvProcessor)
+        public RunApp(IManipulator manipulator, IConfiguration configuration, 
+            IEmguCvProcessor emguCvProcessor, ISpeechRecognitionProcessor speechRecognitionProcessor)
         {
             _manipulator = manipulator;
             _configuration = configuration;
             _emguCvProcessor = emguCvProcessor;
+            _speechRecognitionProcessor = speechRecognitionProcessor;
         }
 
         public void Run()
@@ -31,38 +36,45 @@ namespace BotStarter
             string blazingArrow = Path.Combine(path,"BlazingArrow", "blazingArrow.png");
             string manaLevel = Path.Combine(path, "Mana", "manaLevel.png");
 
-            while (true)
-            {
-                BackToMovablePosition();
+            _speechRecognitionProcessor.GetRecognizedSpeechInConsole();
 
-                foreach (string fileName in fileEntries)
-                {
-                    var healthCoords = _emguCvProcessor.GetCoordinates(fileName);
-                    if (healthCoords.X > 0) ClickAndBack(coordinates, "7");
-                }
+            //while (true)
+            //{
+            //    BackToMovablePosition();
 
-                if (DateTime.Now.Ticks - healingSkillCheckedTime > 11000000000)
-                {
-                    ClickAndBack(coordinates, "7");
-                    healingSkillCheckedTime = DateTime.Now.Ticks;
-                }
+            //    foreach (string fileName in fileEntries)
+            //    {
+            //        var healthCoords = _emguCvProcessor.GetCoordinates(fileName);
+            //        if (healthCoords.X > 0) ClickAndBack(coordinates, "7");
+            //    }
 
-                Thread.Sleep(500);
-                ClickAndBack(coordinates, "2");
-                Thread.Sleep(5000);
-                ClickAndBack(coordinates, "tab");
-                Thread.Sleep(500);
-                BackToMovablePosition();
-                ClickAndBack(coordinates, "2");
-                Thread.Sleep(5000);
-                ClickAndBack(coordinates, "4", 5000);
+            //    if (DateTime.Now.Ticks - healingSkillCheckedTime > 11000000000)
+            //    {
+            //        ClickAndBack(coordinates, "7");
+            //        healingSkillCheckedTime = DateTime.Now.Ticks;
+            //    }
 
-                var blazingArrowCoords = _emguCvProcessor.GetCoordinates(blazingArrow);
-                if (blazingArrowCoords.X <= 0) ClickAndBack(coordinates, "5");
+            //    Thread.Sleep(500);
+            //    ClickAndBack(coordinates, "2");
+            //    Thread.Sleep(5000);
+            //    ClickAndBack(coordinates, "tab");
+            //    Thread.Sleep(500);
+            //    BackToMovablePosition();
+            //    ClickAndBack(coordinates, "2");
+            //    Thread.Sleep(5000);
+            //    ClickAndBack(coordinates, "4", 5000);
 
-                var manaLevelCoords = _emguCvProcessor.GetCoordinates(manaLevel);
-                if (manaLevelCoords.X > 0) ClickAndBack(coordinates, "3");
-            }
+            //    var blazingArrowCoords = _emguCvProcessor.GetCoordinates(blazingArrow);
+            //    if (blazingArrowCoords.X <= 0) ClickAndBack(coordinates, "5");
+
+            //    var manaLevelCoords = _emguCvProcessor.GetCoordinates(manaLevel);
+            //    if (manaLevelCoords.X > 0) ClickAndBack(coordinates, "3");
+            //}
+        }
+
+        private void OrderCompleted(object sender, EventArgs e)
+        { 
+            
         }
 
         private void ClickAndBack(Dictionary<string, Dictionary<string, int>> coordinates, string button, int pause = 0)

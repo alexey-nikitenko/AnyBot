@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BotStarter", "BotStarter.cs
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfUi", "..\WpfUi\WpfUi.csproj", "{C07EE16B-109E-465A-BBC0-DAB5D6E6E6EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageRecognition", "..\ImageRecognition\ImageRecognition.csproj", "{6D5A35BB-C053-470F-B400-77D4D0AA78D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageRecognition", "..\ImageRecognition\ImageRecognition.csproj", "{6D5A35BB-C053-470F-B400-77D4D0AA78D4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
