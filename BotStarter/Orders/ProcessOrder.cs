@@ -1,7 +1,4 @@
 ﻿using BotStarter.HardwareInteraction;
-using ImageRecognition;
-using SpeechRecognition;
-
 namespace BotStarter.Orders
 {
     internal class ProcessOrder : IProcessOrder
@@ -50,7 +47,6 @@ namespace BotStarter.Orders
         private void BreakClickProcess()
         {
             isClickContinue = false;
-            //sender.Abort();
         }
 
         private void ClickAndBackConstantly(Dictionary<string, Dictionary<string, int>> coordinates, string button, bool clickingContinue, int pause = 0)
@@ -59,10 +55,8 @@ namespace BotStarter.Orders
             item = coordinates[button];
             pauseGlobal = pause;
 
-            sender = new Thread(new ThreadStart(ThreadProc));
-            sender.Start();
-
-
+                sender = new Thread(new ThreadStart(ThreadProc));
+                sender.Start();
         }
 
         private void ThreadProc()
