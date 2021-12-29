@@ -61,8 +61,8 @@ namespace BotStarter
                 //    if (healthCoords.X > 0) ClickAndBack(coordinates, "7");
                 //}
 
-                RunPeriodicaly(ref healingSkillCheckedTime, "1", 2);
-                RunPeriodicaly(ref manaSkillCheckedTime, "2", 6);
+                RunPeriodicaly(ref healingSkillCheckedTime, "clericAtak", 3);
+                RunPeriodicaly(ref manaSkillCheckedTime, "clericBaf", 1800);
 
                 //Thread.Sleep(500);
                 //ClickAndBack(coordinates, "2");

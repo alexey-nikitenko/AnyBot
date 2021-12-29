@@ -93,6 +93,7 @@ namespace BotStarter.Orders
             Coordinates followCoordinates = _emguCvProcessor.GetCoordinates(followImage);
             WindowHelper.BringWindowToFront();
             WindowHelper.SetCursorPosition(followCoordinates.X + 10, followCoordinates.Y + 10);
+            Thread.Sleep(500);
             LeftClick();
             //WindowHelper.BringWindowToFront();
 
@@ -105,7 +106,9 @@ namespace BotStarter.Orders
 
             Coordinates followCoordinates = _emguCvProcessor.GetCoordinates(followImage);
             WindowHelper.BringWindowToFront();
+            Thread.Sleep(500);
             WindowHelper.SetCursorPosition(followCoordinates.X + 10, followCoordinates.Y + 10);
+            Thread.Sleep(500);
 
             for (int i = 0; i < amountOfClicks; i++)
             {
@@ -117,14 +120,14 @@ namespace BotStarter.Orders
         public void LeftClick()
         {
             _manipulator.ChangeMotorAngle(14, 320, 20);
-            _manipulator.ChangeMotorAngle(14, 400, 20);
+            _manipulator.ChangeMotorAngle(14, 480, 20);
             _manipulator.ChangeMotorAngle(14, 320, 20);
         }
 
         public void RightClick()
         {
             _manipulator.ChangeMotorAngle(15, 250, 50);
-            _manipulator.ChangeMotorAngle(15, 150, 50);
+            _manipulator.ChangeMotorAngle(15, 100, 50);
             _manipulator.ChangeMotorAngle(15, 250, 50);
         }
 
@@ -190,7 +193,7 @@ namespace BotStarter.Orders
             foreach (string file in Directory.GetFiles(healImages))
             {
                 var healLevelCoords = _emguCvProcessor.GetCoordinates(file);
-                if (healLevelCoords.X > 0) RunSkill("healPot");
+                if (healLevelCoords.X > 0) RunSkill("clericHeal");
             }
         }
 

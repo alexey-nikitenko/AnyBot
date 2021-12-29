@@ -55,7 +55,7 @@ namespace BotStarter
 
         public static void BringWindowToFront()
         {
-            IntPtr wdwIntPtr = FindWindow(null, "Untitled - Notepad");
+            IntPtr wdwIntPtr = FindWindow(null, "Untitled - Paint");
 
             //get the hWnd of the process
             Windowplacement placement = new Windowplacement();
