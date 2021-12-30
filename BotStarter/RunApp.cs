@@ -36,43 +36,29 @@ namespace BotStarter
             double healingSkillCheckedTime = new TimeSpan(DateTime.Now.Ticks).TotalSeconds;
             double manaSkillCheckedTime = new TimeSpan(DateTime.Now.Ticks).TotalSeconds;
 
+            _order.MoveByMotorWithSpeedslow(3, 100, 400, 0);
+
             while (true)
             {
-                //_order.LeftClick();
-                //Thread.Sleep(1000);
-                //_order.RightClick();
-                //Thread.Sleep(1000);
-
-                //_order.BackToMovablePosition();
-
-                //_order.RunSkill("1", 500);
-                //_order.RunSkill("2", 500);
 
                 if (!_order.MonsterInTarget())
                 {
                     _order.ClickAndBack("4", 5000);
-                    _order.ClickAndBack("tab");
+
                 }
-                
+                if (!_order.MonsterInTarget())
+                {
+                    _order.ClickAndBack("tab", 0);
+                }
+                else
+                {
+                    RunPeriodicaly(ref healingSkillCheckedTime, "clericAtak", 1);
+                    _order.GoToCase();
+                }
 
-                //foreach (string fileName in fileEntries)
-                //{
-                //    var healthCoords = _emguCvProcessor.GetCoordinates(fileName);
-                //    if (healthCoords.X > 0) ClickAndBack(coordinates, "7");
-                //}
-
-                RunPeriodicaly(ref healingSkillCheckedTime, "clericAtak", 3);
                 RunPeriodicaly(ref manaSkillCheckedTime, "clericBaf", 1800);
 
-                //Thread.Sleep(500);
-                //ClickAndBack(coordinates, "2");
-                //Thread.Sleep(5000);
-                //_order.ClickAndBack(coordinates, "tab");
-                //Thread.Sleep(500);
-                //BackToMovablePosition();
-                //ClickAndBack(coordinates, "2");
-                //Thread.Sleep(5000);
-                //ClickAndBack(coordinates, "4", 5000);
+                
 
                 _order.UseHealOrManaPot();
             }

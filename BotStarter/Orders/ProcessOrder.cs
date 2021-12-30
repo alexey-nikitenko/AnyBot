@@ -13,7 +13,6 @@ namespace BotStarter.Orders
         string solutiondir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName;
         private volatile bool isClickContinue = false;
         private volatile Dictionary<string, int> item = null;
-        int pauseGlobal = 0;
         Thread sender;
 
 
@@ -62,7 +61,6 @@ namespace BotStarter.Orders
             var coordinates = _configuration.GetCoordinates();
             isClickContinue = clickingContinue;
             item = coordinates[button];
-            pauseGlobal = pause;
 
             sender = new Thread(new ThreadStart(ThreadProc));
             sender.Start();
@@ -72,7 +70,7 @@ namespace BotStarter.Orders
         {
             while (isClickContinue)
             {
-                FindAndClickButton(item, pauseGlobal);
+                FindAndClickButton(item, 0);
                 BackToMovablePosition();
             }
         }
@@ -116,53 +114,68 @@ namespace BotStarter.Orders
                 Thread.Sleep(timeOut);
             }
         }
+        public void MoveByMotorWithSpeedslow(int motorIndex, int initialNumber, int goalNumber, int speedSlow = 0)
+        {
+            _manipulator.MoveByMotorWithSpeedslow(motorIndex, initialNumber, goalNumber, speedSlow);
+        }
 
         public void LeftClick()
         {
-            _manipulator.ChangeMotorAngle(14, 320, 20);
-            _manipulator.ChangeMotorAngle(14, 480, 20);
-            _manipulator.ChangeMotorAngle(14, 320, 20);
+            _manipulator.MoveByMotorWithSpeedslow(14, 320, 400, 0);
+            _manipulator.MoveByMotorWithSpeedslow(14, 400, 320, 0);
         }
 
         public void RightClick()
         {
-            _manipulator.ChangeMotorAngle(15, 250, 50);
-            _manipulator.ChangeMotorAngle(15, 100, 50);
-            _manipulator.ChangeMotorAngle(15, 250, 50);
+            _manipulator.MoveByMotorWithSpeedslow(15, 250, 150, 0);
+            _manipulator.MoveByMotorWithSpeedslow(15, 150, 250, 0);
         }
 
-        public void ClickAndBack(string button, int pause = 0)
+        public void ClickAndBack(string button, int pause = 0 )
         {
             var coordinates = _configuration.GetCoordinates();
             FindAndClickButton(coordinates[button], pause);
             BackToMovablePosition();
-            Thread.Sleep(500);
         }
 
         public void BackToMovablePosition()
         {
-            _manipulator.ChangeMotorAngle(1, 200, 2);
-            _manipulator.ChangeTwoMotorsAngleOneTime(1, 2, 200, 270, 2);
+            var angles = _configuration.GetLastAngles();
+
+            _manipulator.MoveByMotorWithSpeedslow(1, angles["1"], 180, 5);
+            _manipulator.MoveByMotorWithSpeedslow(2, angles["2"], 250, 5);
         }
 
-        public void FindAndClickButton(Dictionary<string, int> angleValuesByMotor, int pause = 0)
+        public void FindAndClickButton(Dictionary<string, int> angleValuesByMotor, int pause)
         {
+            var angles = _configuration.GetLastAngles();
+
+            int firstMotorInitialPosition = angles["1"];
+            int secondMotorInitialPosition = angles["2"];
+            int thirdMotorInitialPosition = angles["3"];
+            int forthMotorInitialPosition = angles["4"];
+
             int firstMotorGoalPosition = angleValuesByMotor["1"];
             int secondMotorGoalPosition = angleValuesByMotor["2"];
             int thirdMotorGoalPosition = angleValuesByMotor["3"];
             int forthMotorGoalPosition = angleValuesByMotor["4"];
 
-            _manipulator.ChangeMotorAngle(4, forthMotorGoalPosition, 5);
-            _manipulator.ChangeTwoMotorsAngleOneTime(1, 2, firstMotorGoalPosition, secondMotorGoalPosition, 10);
-
-            PressAndRelease(thirdMotorGoalPosition, pause);
+            _manipulator.MoveByMotorWithSpeedslow(4, forthMotorInitialPosition, forthMotorGoalPosition, 5);
+            Thread.Sleep(500);
+            _manipulator.MoveByMotorWithSpeedslow(2, secondMotorInitialPosition, secondMotorGoalPosition, 5);
+            _manipulator.MoveByMotorWithSpeedslow(1, firstMotorInitialPosition, firstMotorGoalPosition, 5);
+            //_manipulator.ChangeTwoMotorsAngleOneTime(1, 2, firstMotorGoalPosition, secondMotorGoalPosition, 5);
+            Thread.Sleep(500);
+            ManipulatorClick(thirdMotorInitialPosition, thirdMotorGoalPosition, pause);
         }
 
-        public void PressAndRelease(int motorGoalPosition, int pause = 0)
+        public void ManipulatorClick(int thirdMotorInitialPosition, int thirdMotorGoalPosition, int pause)
         {
-            _manipulator.ChangeMotorAngle(3, motorGoalPosition, 80);
-            if (pause > 0) Thread.Sleep(pause);
-            _manipulator.ChangeMotorAngle(3, 400, 80);
+            _manipulator.MoveByMotorWithSpeedslow(3, thirdMotorInitialPosition, thirdMotorGoalPosition, 0);
+
+            if(pause > 0) Thread.Sleep(pause);
+
+            _manipulator.MoveByMotorWithSpeedslow(3, thirdMotorGoalPosition, thirdMotorInitialPosition, 0);
         }
 
         public Dictionary<string, int> GetLastCoordinates()
@@ -173,11 +186,6 @@ namespace BotStarter.Orders
         public void SaveCoordinates(CoordinatesModel coordinatesModel)
         {
             _configuration.SaveCoordinates(coordinatesModel);
-        }
-
-        public void MoveAndSave(int v, int value)
-        {
-            _manipulator.ChangeMotorAngle(v, value, 1);
         }
 
         public void UseHealOrManaPot()
@@ -200,11 +208,32 @@ namespace BotStarter.Orders
         public bool MonsterInTarget()
         {
             string path = Path.Combine(solutiondir, "images");
-            string monsterInTargetImage = Path.Combine(path, "Monster", "monsterInTarget.png");
+            string monsterInTargetImages = Path.Combine(path, "Monster");
 
-            var manaLevelCoords = _emguCvProcessor.GetCoordinates(monsterInTargetImage);
+            foreach (string file in Directory.GetFiles(monsterInTargetImages))
+            {
+                var healLevelCoords = _emguCvProcessor.GetCoordinates(file);
+                if (healLevelCoords.X > 0) 
+                    return true;
+            }
 
-            return manaLevelCoords.X > 0;
+            return false;
+        }
+
+        public void GoToCase()
+        {
+            string path = Path.Combine(solutiondir, "images");
+            string caseImage = Path.Combine(path, "Skills", "case.png");
+
+            var caseCoords = _emguCvProcessor.GetCoordinates(caseImage);
+            if (caseCoords.X > 0)
+            {
+                WindowHelper.BringWindowToFront();
+                Thread.Sleep(500);
+                WindowHelper.SetCursorPosition(caseCoords.X + 10, caseCoords.Y + 10);
+                Thread.Sleep(500);
+                LeftClick();
+            }
         }
     }
 }

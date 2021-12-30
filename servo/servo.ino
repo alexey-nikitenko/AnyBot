@@ -42,6 +42,7 @@ uint8_t servonum = 0;
 
 String servoMotorIndex;
 String str2;
+String str3;
 String readString;
 
 void setup() {
@@ -50,8 +51,6 @@ void setup() {
 
   pwm.setOscillatorFrequency(27000000);
   pwm.setPWMFreq(SERVO_FREQ);  // Analog servos run at ~50 Hz updates
-
-  delay(10);
 }
 
 // You can use this function if you'd like to set the pulse length in seconds
@@ -81,19 +80,44 @@ void recvWithEndMarker() {
   String readString = Serial.readStringUntil('#'); // read the complete string
 
   servoMotorIndex = readString.substring(0, readString.indexOf(" "));
-  str2 = readString.substring(readString.indexOf(" ") + 1);
-
-  if(servoMotorIndex.toInt() != 0)
-  {
-    doRotation(servoMotorIndex.toInt(),str2.toInt());
-    int magicNumber = str2.toInt();
-    Serial.println(magicNumber);
-  }
+  //str2 = readString.substring(readString.indexOf(" ") + 1);
+  //str3 = readString.substring(str2.indexOf(" ") + 1);
   
+  int frase[4], r=0, t=0;
+    
+  for (int i=0; i < readString.length(); i++)
+  { 
+   if(readString.charAt(i) == ' ') 
+    { 
+      frase[t] = readString.substring(r, i).toInt(); 
+      r=(i+1); 
+      t++; 
+    }
+  }
+
+  doRotation(frase[0], frase[1], frase[2], frase[3]);
+
   //delay(500);
 }
 
-void doRotation(int servoMotorIndex, int par2)
+void doRotation(int pin, int initial, int goal, int delayValue)
 {
-  pwm.setPWM(servoMotorIndex, 0, par2);
+  if(initial < goal) 
+    { 
+      for (int pulselen = initial; pulselen < goal; pulselen++)
+        {
+          pwm.setPWM(pin, 0, pulselen);
+          delay(delayValue);  //  <-------- Increasing this delay will slow down the servo movement
+        } 
+    }
+    
+  if(initial > goal) 
+    { 
+      for (int pulselen = initial; pulselen > goal; pulselen--)
+        {
+          pwm.setPWM(pin, 0, pulselen);
+          delay(delayValue);  //  <-------- Increasing this delay will slow down the servo movement
+        } 
+    }
+  
 }
