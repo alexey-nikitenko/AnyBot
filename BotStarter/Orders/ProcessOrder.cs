@@ -24,8 +24,6 @@ namespace BotStarter.Orders
 
         public void RunOrder(string order)
         {
-            
-
             switch (order)
             {
                 case "Doctor give me a heal":
@@ -46,7 +44,6 @@ namespace BotStarter.Orders
                 default:
                     break;
             }
-
         }
 
         private void BreakClickProcess()

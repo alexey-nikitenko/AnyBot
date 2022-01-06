@@ -43,8 +43,6 @@ namespace BotStarter
 
                 RunPeriodicaly(ref manaSkillCheckedTime, "clericBaf", 1800);
 
-                
-
                 _order.UseHealOrManaPot();
             }
         }
