@@ -13,6 +13,7 @@
 
         public void MoveByMotorWithSpeedslow(int motorNmr, int initial, int goal, int speedSlow)
         {
+            //_comPortConnector = new TestComPort();
             _comPortConnector.RotateMotor(motorNmr, initial, goal, speedSlow);
             _configuration.SaveLastAngle(motorNmr, goal);
         }

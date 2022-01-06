@@ -1,6 +1,5 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
-using System.Drawing;
 using System.Drawing.Imaging;
 
 namespace ImageRecognition

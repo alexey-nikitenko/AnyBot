@@ -9,5 +9,6 @@ namespace BotStarter
         Dictionary<string, Dictionary<string, int>> GetCoordinates();
         void SaveCoordinates(CoordinatesModel coordinatesModel);
         void SaveLastAngle(int motorNbr, int angleValue);
+        Dictionary<string, string> GetParameters();
     }
 }

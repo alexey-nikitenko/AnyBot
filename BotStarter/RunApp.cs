@@ -1,27 +1,12 @@
-﻿using BotStarter.HardwareInteraction;
-using BotStarter.Models;
-using BotStarter.MousePointer;
-using BotStarter.Orders;
-using ImageRecognition;
+﻿using BotStarter.Orders;
 using SpeechRecognition;
 
 namespace BotStarter
 {
     public class RunApp : IRunApp
     {
-        //IManipulator _manipulator;
-        //IConfiguration _configuration;
         ISpeechRecognitionProcessor _speechRecognitionProcessor;
         IProcessOrder _order;
-
-        string solutiondir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName;
-
-        //public RunApp(IManipulator manipulator, IConfiguration configuration, ISpeechRecognitionProcessor speechRecognitionProcessor)
-        //{
-        //    _manipulator = manipulator;
-        //    _configuration = configuration;
-        //    _speechRecognitionProcessor = speechRecognitionProcessor;
-        //}
 
         public RunApp(IProcessOrder processOrder, ISpeechRecognitionProcessor speechRecognitionProcessor)
         {

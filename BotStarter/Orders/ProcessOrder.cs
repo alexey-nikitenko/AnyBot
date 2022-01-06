@@ -9,12 +9,10 @@ namespace BotStarter.Orders
         IManipulator _manipulator;
         IConfiguration _configuration;
         IEmguCvProcessor _emguCvProcessor;
-
-        string solutiondir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName;
+        private static readonly string solutiondir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName;
         private volatile bool isClickContinue = false;
         private volatile Dictionary<string, int> item = null;
         Thread sender;
-
 
         public ProcessOrder(IManipulator manipulator, IConfiguration configuration
             , IEmguCvProcessor emguCvProcessor)
@@ -51,12 +49,12 @@ namespace BotStarter.Orders
 
         }
 
-        public void BreakClickProcess()
+        private void BreakClickProcess()
         {
             isClickContinue = false;
         }
 
-        public void ClickAndBackConstantly(string button, bool clickingContinue, int pause = 0)
+        private void ClickAndBackConstantly(string button, bool clickingContinue, int pause = 0)
         {
             var coordinates = _configuration.GetCoordinates();
             isClickContinue = clickingContinue;
@@ -66,7 +64,7 @@ namespace BotStarter.Orders
             sender.Start();
         }
 
-        public void ThreadProc()
+        private void ThreadProc()
         {
             while (isClickContinue)
             {
@@ -75,7 +73,7 @@ namespace BotStarter.Orders
             }
         }
 
-        public void Follow()
+        private void Follow()
         {
             string path = Path.Combine(solutiondir, "images");
             string squadImage = Path.Combine(path, "Squad", "squad.png");
@@ -93,8 +91,6 @@ namespace BotStarter.Orders
             WindowHelper.SetCursorPosition(followCoordinates.X + 10, followCoordinates.Y + 10);
             Thread.Sleep(500);
             LeftClick();
-            //WindowHelper.BringWindowToFront();
-
         }
 
         public void RunSkill(string skill, int timeOut = 0, int amountOfClicks = 1)
@@ -114,18 +110,19 @@ namespace BotStarter.Orders
                 Thread.Sleep(timeOut);
             }
         }
+
         public void MoveByMotorWithSpeedslow(int motorIndex, int initialNumber, int goalNumber, int speedSlow = 0)
         {
             _manipulator.MoveByMotorWithSpeedslow(motorIndex, initialNumber, goalNumber, speedSlow);
         }
 
-        public void LeftClick()
+        private void LeftClick()
         {
             _manipulator.MoveByMotorWithSpeedslow(14, 320, 400, 0);
             _manipulator.MoveByMotorWithSpeedslow(14, 400, 320, 0);
         }
 
-        public void RightClick()
+        private void RightClick()
         {
             _manipulator.MoveByMotorWithSpeedslow(15, 250, 150, 0);
             _manipulator.MoveByMotorWithSpeedslow(15, 150, 250, 0);
@@ -138,7 +135,7 @@ namespace BotStarter.Orders
             BackToMovablePosition();
         }
 
-        public void BackToMovablePosition()
+        private void BackToMovablePosition()
         {
             var angles = _configuration.GetLastAngles();
 
@@ -146,7 +143,7 @@ namespace BotStarter.Orders
             _manipulator.MoveByMotorWithSpeedslow(2, angles["2"], 250, 5);
         }
 
-        public void FindAndClickButton(Dictionary<string, int> angleValuesByMotor, int pause)
+        private void FindAndClickButton(Dictionary<string, int> angleValuesByMotor, int pause)
         {
             var angles = _configuration.GetLastAngles();
 
@@ -164,12 +161,11 @@ namespace BotStarter.Orders
             Thread.Sleep(500);
             _manipulator.MoveByMotorWithSpeedslow(2, secondMotorInitialPosition, secondMotorGoalPosition, 5);
             _manipulator.MoveByMotorWithSpeedslow(1, firstMotorInitialPosition, firstMotorGoalPosition, 5);
-            //_manipulator.ChangeTwoMotorsAngleOneTime(1, 2, firstMotorGoalPosition, secondMotorGoalPosition, 5);
             Thread.Sleep(500);
             ManipulatorClick(thirdMotorInitialPosition, thirdMotorGoalPosition, pause);
         }
 
-        public void ManipulatorClick(int thirdMotorInitialPosition, int thirdMotorGoalPosition, int pause)
+        private void ManipulatorClick(int thirdMotorInitialPosition, int thirdMotorGoalPosition, int pause)
         {
             _manipulator.MoveByMotorWithSpeedslow(3, thirdMotorInitialPosition, thirdMotorGoalPosition, 0);
 
@@ -234,6 +230,14 @@ namespace BotStarter.Orders
                 Thread.Sleep(500);
                 LeftClick();
             }
+        }
+
+        public void MoveByMotor(int motorIndex, int goalPosition)
+        {
+            var angles = _configuration.GetLastAngles();
+            int motorInitialPosition = angles[motorIndex.ToString()];
+
+            _manipulator.MoveByMotorWithSpeedslow(motorIndex, motorInitialPosition, goalPosition, 0);
         }
     }
 }

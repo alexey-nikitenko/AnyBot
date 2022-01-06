@@ -1,5 +1,5 @@
-﻿using BotStarter;
-using BotStarter.Models;
+﻿using BotStarter.Models;
+using BotStarter.Orders;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -11,11 +11,11 @@ namespace WpfUi
     /// </summary>
     public partial class MainWindow : Window
     {
-        IRunApp _runApp;
+        IProcessOrder _order;
 
-        public MainWindow(IRunApp runApp)
+        public MainWindow(IProcessOrder order)
         {
-            _runApp = runApp;
+            _order = order;
             InitializeComponent();
         }
 
@@ -26,7 +26,7 @@ namespace WpfUi
 
         private void LoadInitialAnglesValues()
         {
-            var lastAngles = _runApp.GetLastCoordinates();
+            var lastAngles = _order.GetLastCoordinates();
 
             FirstMotorTextBox.Text = lastAngles["1"].ToString();
             FirstMotorSlider.Value = lastAngles["1"];
@@ -104,15 +104,15 @@ namespace WpfUi
             coordinatesModel.Name = ButtonName.Text;
             coordinatesModel.Coordinates = dictionary;
 
-            _runApp.SaveCoordinates(coordinatesModel);
+            _order.SaveCoordinates(coordinatesModel);
         }
 
         private void Process_Click(object sender, RoutedEventArgs e)
         {
-            _runApp.MoveAndSave(1, (int)FirstMotorSlider.Value);
-            _runApp.MoveAndSave(2, (int)SecondMotorSlider.Value);
-            _runApp.MoveAndSave(3, (int)ClickMotorSlider.Value);
-            _runApp.MoveAndSave(4, (int)RotateMotorSlider.Value);
+            _order.MoveByMotor(1, (int)FirstMotorSlider.Value);
+            _order.MoveByMotor(2, (int)SecondMotorSlider.Value);
+            _order.MoveByMotor(3, (int)ClickMotorSlider.Value);
+            _order.MoveByMotor(4, (int)RotateMotorSlider.Value);
 
         }
 

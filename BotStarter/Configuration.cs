@@ -6,12 +6,14 @@ namespace BotStarter
 {
     public class Configuration : IConfiguration
     {
+        private static readonly string solutiondir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
+        private static readonly string angleValuesFile = "angleValues.json";
+        private static readonly string coordinatesFile = "coordinates.json";
+        private static readonly string parametersFile = "parameters.json";
+
         public Dictionary<string, int> GetLastAngles()
         {
-            string fileName = "angleValues.json";
-            string solutiondir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName;
-            string path = Path.Combine(solutiondir, fileName);
-
+            string path = Path.Combine(solutiondir, angleValuesFile);
             string configJson = File.ReadAllText(path);
 
             var servoLastAngle = JObject.Parse(configJson).ToObject<Dictionary<string, int>>();
@@ -21,9 +23,7 @@ namespace BotStarter
 
         public Dictionary<string, Dictionary<string, int>> GetCoordinates()
         {
-            string fileName = "coordinates.json";
-            string solutiondir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName;
-            string path = Path.Combine(solutiondir, fileName);
+            string path = Path.Combine(solutiondir, coordinatesFile);
             string coordinatesJson = File.ReadAllText(path);
 
             var coordinates = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, int>>>(coordinatesJson);
@@ -31,13 +31,19 @@ namespace BotStarter
             return coordinates;
         }
 
+        public Dictionary<string, string> GetParameters()
+        {
+            string path = Path.Combine(solutiondir, parametersFile);
+            string parametersJson = File.ReadAllText(path);
+
+            var parameters = JsonConvert.DeserializeObject<Dictionary<string, string>>(parametersJson);
+
+            return parameters;
+        }
+
         public void SaveCoordinates(CoordinatesModel coordinatesModel)
         {
-            string fileName = "coordinates.json";
-
-            string solutiondir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName;
-            string path = Path.Combine(solutiondir, fileName);
-
+            string path = Path.Combine(solutiondir, coordinatesFile);
             string coordinatesJson = File.ReadAllText(path);
 
             var jsonObj = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, int>>>(coordinatesJson);
@@ -65,11 +71,9 @@ namespace BotStarter
 
         public void SaveLastAngle(int motorNbr, int angleValue)
         {
-            string fileName = "angleValues.json";
-            string solutiondir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName;
-            string path = Path.Combine(solutiondir, fileName);
-
+            string path = Path.Combine(solutiondir, angleValuesFile);
             string configJson = File.ReadAllText(path);
+
             var jsonObj = JObject.Parse(configJson);
             jsonObj[motorNbr.ToString()] = angleValue;
 
