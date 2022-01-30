@@ -11,7 +11,9 @@ namespace BotStarter.Orders
         void RunSkill(string skill, int timeOut = 0, int amountOfClicks = 1);
         void UseHealOrManaPot();
         bool MonsterInTarget();
-        void MoveByMotorWithSpeedslow(int v1, int v2, int v3, int v4);
+        void MoveByMotorWithSpeedSlow(int amount, int motorNumber, int initial, int goal, int delay);
+        void MoveByMotorWithSpeedSlow(int amount, int motorNumber1, int motorNumber2, int initial, int goal, int delay);
+        void MoveByMotorWithSpeedSlow(int amount, int motorNumber1, int motorNumber2, int motorNumber3, int initial, int goal, int delay);
         void GoToCase();
         void MoveByMotor(int v, int value);
     }

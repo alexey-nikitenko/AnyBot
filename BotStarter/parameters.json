@@ -1,3 +1,9 @@
 {
-  "comPortName": "COM1",
+  "comPortName": "COM7",
+  "leftMouseKeyMotor": "14",
+  "rightMouseKeyMotor": "15",
+  "leftClickInitialPosition": "480",
+  "leftClickGoalPosition": "410",
+  "rightClickInitialPosition": "100",
+  "rightClickGoalPosition": "160",
 }

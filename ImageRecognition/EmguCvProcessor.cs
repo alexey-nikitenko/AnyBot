@@ -20,8 +20,8 @@ namespace ImageRecognition
         {
             Bitmap bitmap = MakeScreenshot();
             Coordinates coordinates = new Coordinates();
-            Image<Bgr, byte> source = bitmap.ToImage<Bgr, byte>();  // Image B
-            Image<Bgr, byte> template = new Image<Bgr, byte>(imgPath); // Image A
+            Image<Bgr, byte> source = bitmap.ToImage<Bgr, byte>();
+            Image<Bgr, byte> template = new Image<Bgr, byte>(imgPath);
 
             using (Image<Gray, float> result = source.MatchTemplate(template, Emgu.CV.CvEnum.TemplateMatchingType.CcoeffNormed))
             {

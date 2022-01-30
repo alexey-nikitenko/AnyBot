@@ -1,16 +1,12 @@
 ﻿using BotStarter.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using static BotStarter.Constants;
 
 namespace BotStarter
 {
     public class Configuration : IConfiguration
     {
-        private static readonly string solutiondir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
-        private static readonly string angleValuesFile = "angleValues.json";
-        private static readonly string coordinatesFile = "coordinates.json";
-        private static readonly string parametersFile = "parameters.json";
-
         public Dictionary<string, int> GetLastAngles()
         {
             string path = Path.Combine(solutiondir, angleValuesFile);
